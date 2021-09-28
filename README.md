@@ -1,16 +1,23 @@
 # rickandmorty
 
-A new Flutter project.
+App that consumes the resources of the Rick and Morty api.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+App features.
 
-A few resources to get you started if this is your first Flutter project:
+### Home
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+<img src="docs/home.png" alt="drawing" width="300"/>
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Search characters
+
+<img src="docs/characters.png" alt="drawing" width="300"/>
+
+### Episodes per character
+
+<img src="docs/episodes.png" alt="drawing" width="300"/>
+
+### About
+
+<img src="docs/about.png" alt="drawing" width="300"/>
