@@ -31,11 +31,14 @@ dependencies:
   http: any
   google_fonts: any
   flutter_svg: any
-  connectivity_plus: any
+  connectivity_plus: any  
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  mockito: any
+  build_runner: any
+  faker: any
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
