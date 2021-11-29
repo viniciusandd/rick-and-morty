@@ -1,6 +1,8 @@
+import '../../../domain/entities/entities.dart';
 import '../../../domain/helpers/helpers.dart';
 
 import '../../http/http.dart';
+import '../../models/models.dart';
 
 class RemoteLoadCharactersUseCase {
   final HttpClient httpClient;
@@ -11,9 +13,10 @@ class RemoteLoadCharactersUseCase {
     required this.url
   });
 
-  Future<void> load() async {
+  Future<List<CharacterEntity>> load() async {
     try {
-      await this.httpClient.request(url: url, method: 'get');
+      final httpResponse = await this.httpClient.request(url: url, method: 'get');
+      return httpResponse["results"].map<CharacterEntity>((map) => RemoteCharacterModel.fromMap(map).toEntity()).toList();      
     } catch (_) {
       throw DomainError.unexpected;
     }

@@ -31,7 +31,8 @@ dependencies:
   http: any
   google_fonts: any
   flutter_svg: any
-  connectivity_plus: any  
+  connectivity_plus: any
+  equatable: any
 
 dev_dependencies:
   flutter_test:
