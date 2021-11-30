@@ -17,7 +17,8 @@ void main() {
   late RemoteLoadCharactersUseCase sut;
   late MockHttpClient httpClient;
   late String url;
-  late Map charactersList;
+  late Map bodyWithCharacters;
+  late Map unexpectedBody;
 
   PostExpectation mockRequest() => 
     when(httpClient.request(
@@ -40,8 +41,9 @@ void main() {
       httpClient: httpClient,
       url: url
     );
-    charactersList = CharacterFactory.makeResponseWithList();
-    setDataForMockRequest(charactersList);
+    unexpectedBody = CharacterFactory.makeResponseWithUnexpectedBody();
+    bodyWithCharacters = CharacterFactory.makeResponseWithList();
+    setDataForMockRequest(bodyWithCharacters);
   });
 
   test('Deve fazer a requisição http com os parâmetros corretos.', () async {
@@ -55,18 +57,26 @@ void main() {
 
     expect(response, [
       CharacterEntity(
-        id: charactersList["results"][0]["id"], 
-        name: charactersList["results"][0]["name"], 
-        status: charactersList["results"][0]["status"], 
-        gender: charactersList["results"][0]["gender"]
+        id: bodyWithCharacters["results"][0]["id"], 
+        name: bodyWithCharacters["results"][0]["name"], 
+        status: bodyWithCharacters["results"][0]["status"], 
+        gender: bodyWithCharacters["results"][0]["gender"]
       ),
       CharacterEntity(
-        id: charactersList["results"][1]["id"], 
-        name: charactersList["results"][1]["name"], 
-        status: charactersList["results"][1]["status"], 
-        gender: charactersList["results"][1]["gender"]
+        id: bodyWithCharacters["results"][1]["id"], 
+        name: bodyWithCharacters["results"][1]["name"], 
+        status: bodyWithCharacters["results"][1]["status"], 
+        gender: bodyWithCharacters["results"][1]["gender"]
       ),
     ]);
+  });
+
+  test('Deve lançar um erro inesperado se obter um http 200 com o body inesperado.', () {
+    setDataForMockRequest(unexpectedBody);
+
+    final future = sut.load();
+
+    expect(future, throwsA(DomainError.unexpected));
   });
 
   test('Deve lançar um erro inesperado se obter um http 500.', () {

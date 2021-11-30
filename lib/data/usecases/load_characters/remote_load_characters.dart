@@ -16,6 +16,7 @@ class RemoteLoadCharactersUseCase {
   Future<List<CharacterEntity>> load() async {
     try {
       final httpResponse = await this.httpClient.request(url: url, method: 'get');
+      if (!httpResponse.containsKey("results")) throw HttpError.invalidData;
       return httpResponse["results"].map<CharacterEntity>((map) => RemoteCharacterModel.fromMap(map).toEntity()).toList();      
     } catch (_) {
       throw DomainError.unexpected;

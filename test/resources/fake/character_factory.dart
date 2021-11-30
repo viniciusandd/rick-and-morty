@@ -1,4 +1,8 @@
 class CharacterFactory {
+  static Map makeResponseWithUnexpectedBody() => {
+    "invalid_key": {}
+  };
+
   static Map makeResponseWithList() => {
     "info": {
         "count": 826,
