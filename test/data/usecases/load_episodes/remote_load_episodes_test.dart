@@ -19,6 +19,7 @@ void main() {
   late MockHttpClient httpClient;
   late String url;
   late Map bodyWithEpisodes;
+  late Map unexpectedBody;
   
   PostExpectation mockRequest() => 
     when(httpClient.request(
@@ -38,6 +39,7 @@ void main() {
     httpClient = MockHttpClient();
     url = faker.internet.httpsUrl();
     sut = RemoteLoadEpisodesUseCase(httpClient: httpClient, url: url);
+    unexpectedBody = EpisodeFactory.makeResponseWithUnexpectedBody();
     bodyWithEpisodes = EpisodeFactory.makeResponseWithList();
     setDataForMockRequest(bodyWithEpisodes);
   });
@@ -63,6 +65,14 @@ void main() {
         airDate: bodyWithEpisodes["results"][1]["air_date"]
       ),
     ]);
+  });
+
+  test('Deve lançar um erro inesperado se obter um http 200 com o body inesperado.', () {
+    setDataForMockRequest(unexpectedBody);
+
+    final future = sut.load();
+
+    expect(future, throwsA(DomainError.unexpected));
   });
 
   test('Deve lançar um erro inesperado se obter um http 500.', () {

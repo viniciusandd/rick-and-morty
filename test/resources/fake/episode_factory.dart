@@ -1,4 +1,8 @@
 class EpisodeFactory {
+  static Map makeResponseWithUnexpectedBody() => {
+    "invalid_key": {}
+  };
+
   static Map makeResponseWithList() => {
     "info": {
         "count": 51,
