@@ -5,6 +5,7 @@ import 'package:faker/faker.dart';
 
 import 'package:rickandmorty/data/http/http.dart';
 import 'package:rickandmorty/data/usecases/usecases.dart';
+import 'package:rickandmorty/domain/helpers/helpers.dart';
 
 import 'remote_load_episodes_test.mocks.dart';
 
@@ -24,6 +25,10 @@ void main() {
     mockRequest().thenAnswer((_) async => data);
   }
 
+  void setErrorForMockRequest(error) {
+    mockRequest().thenThrow(error);
+  }
+
   setUp(() {
     httpClient = MockHttpClient();
     url = faker.internet.httpsUrl();
@@ -35,5 +40,13 @@ void main() {
     await sut.load();
 
     verify(httpClient.request(url: url, method: 'get'));
+  });
+
+  test('Deve lançar um erro inesperado se obter um http 500.', () {
+    setErrorForMockRequest(HttpError.serverError); 
+
+    final future = sut.load();
+
+    expect(future, throwsA(DomainError.unexpected));
   });
 }

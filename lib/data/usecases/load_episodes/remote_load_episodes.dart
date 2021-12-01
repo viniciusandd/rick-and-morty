@@ -1,3 +1,5 @@
+import '../../../domain/helpers/helpers.dart';
+
 import '../../http/http.dart';
 
 class RemoteLoadEpisodesUseCase {
@@ -10,6 +12,10 @@ class RemoteLoadEpisodesUseCase {
   });
 
   Future<void> load() async {
-    await this.httpClient.request(url: url, method: 'get');
+    try {
+      await this.httpClient.request(url: url, method: 'get');
+    } catch (_) {
+      throw DomainError.unexpected;
+    }
   }
 }
