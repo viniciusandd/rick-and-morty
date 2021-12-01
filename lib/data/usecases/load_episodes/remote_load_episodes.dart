@@ -1,8 +1,12 @@
+import '../../../domain/entities/entities.dart';
 import '../../../domain/helpers/helpers.dart';
+import '../../../domain/usecases/usecases.dart';
+
+import '../../models/models.dart';
 
 import '../../http/http.dart';
 
-class RemoteLoadEpisodesUseCase {
+class RemoteLoadEpisodesUseCase implements LoadEpisodesUseCase {
   final HttpClient httpClient;
   final String url;
 
@@ -11,9 +15,10 @@ class RemoteLoadEpisodesUseCase {
     required this.url
   });
 
-  Future<void> load() async {
+  Future<List<EpisodeEntity>> load() async {
     try {
-      await this.httpClient.request(url: url, method: 'get');
+      final httpResponse = await this.httpClient.request(url: url, method: 'get');
+      return httpResponse["results"].map<EpisodeEntity>((map) => RemoteEpisodeModel.fromMap(map).toEntity()).toList();
     } catch (_) {
       throw DomainError.unexpected;
     }
